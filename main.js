@@ -1,12 +1,16 @@
 var can=document.querySelector('#mainImage');
 var ctx=can.getContext('2d');
 var N=256, M=384;
-createBackground(256, 384, Math.random()*1000, [blueTheme, blueThemeStar]);
-//createBackground(256, 192, Math.random()*1000, [blueTheme, blueThemeStar]);
+createBackground(256*2, 384, Math.random()*1000, [blueTheme, blueThemeStar], 0);
+createBackground(256*2, 192, Math.random()*1000, [blueTheme, blueThemeStar], 1);
+can.width=M, can.height=N;
+var inGame=false;
+var isWelcome=true;
+var bgFrame=0;
 function update(){
-	rePaintBackground(0, 0);
-	makeFrame(0, 0, N-1, M-1, blueThemeStar);
-	//printText(100, 110, "galactica", 3, blueThemeStar[0], fancyPixelFont);
-	//printText(120, 110, "marcel szelwiga", 1, blueThemeStar[0], fancyPixelFont);
+	if (inGame)			updateGame();
+	if (isWelcome)		updateWelcome();
+
+	bgFrame++;
 }
-setInterval(update, 30);
+setInterval(update, 12);

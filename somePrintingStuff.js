@@ -35,6 +35,7 @@ function makeFrame(a, b, c, d, theme){
 				}
 }
 function printText(x, y, text, scale, color, ALPH){
+	var last=[];
 	for (var c of text)
 		{
 		if (c==' ')
@@ -52,7 +53,12 @@ function printText(x, y, text, scale, color, ALPH){
 				if (T[i][j]==1)
 					for (var ii=0; ii<scale; ii++)
 						for (var jj=0; jj<scale; jj++)
-					setPixel(x+i*scale+ii, y+j*scale+jj, color);
+							{
+							setPixel(x+i*scale+ii, y+j*scale+jj, color);
+							last[0]=x+i*scale+ii;
+							last[1]=y+j*scale+jj;
+							}
 		y+=scale*T[0].length+scale;
 		}
+	return last;
 }

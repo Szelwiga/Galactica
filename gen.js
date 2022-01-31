@@ -1,47 +1,50 @@
 var starsInfo=[[0, 1, 2, 3, 4, 5], [1, 2, 4], [1, 4], [2], [4]];
-var currentStarFrame=0, starAnimationCycle=10;
-var backgroundImageURL, backgroundImage;
+var currentStarFrame=0, frameLeng=0, starAnimationCycle=50;
+var backgroundImages=[], backgroundStars=[];
 var starColors, mainColors;
-var genStars=[];
-var GNN, GMM;
 var genGrid;
 function setPixel(x, y, color){
 	ctx.fillStyle=color;
 	ctx.fillRect(y, x, 1, 1);
 }
-function createBackground(n, m, seed, theme){
+function createBackground(n, m, seed, theme, nr){
 	mainColors=theme[0], starColors=theme[1];
-	GNN=n; GMM=m, genStars=[];
+	can.width=m, can.height=n;
+	GNN=n; GMM=m;
 	setSeed(seed)
 	genGrid=makeGrid(GNN, GMM);
-	var LOG=Math.round(Math.log(n));
+	var LOG=Math.round(n*m/10000);
 	var sizes=[LOG, LOG*2, LOG*3, LOG*3, LOG*2];
+	backgroundStars[nr]=[];
 	for (var i=0; i<sizes.length; i++)
 		for (var j=0; j<sizes[i]; j++)
 			{
-			var CX=getRandom(1, GNN), CY=getRandom(1, GMM);
+			var CX=getRandom(1, n), CY=getRandom(1, m);
 			var ok=true;
 			if (CX<10 || CX>n-10 || CY<10 || CY>m-10)
 				ok=false;
-			for (var star of genStars)
+			for (var star of backgroundStars[nr])
 				if (Math.abs(star.x-CX)+Math.abs(star.y-CY)<10)
 					ok=false;
-			if (ok)		genStars.push({x: CX, y: CY, size: i});
+			if (ok)		backgroundStars[nr].push({x: CX, y: CY, size: i});
 			else		j--;
 			}
-	ctx.fillRect(0, 0, 400, 400);
 	for (var i=0; i<GNN; i++)
 		for (var j=0; j<GMM; j++)
 			setPixel(0+i, 0+j, mainColors[genGrid[i][j]]);
-	backgroundImage=new Image();
-	backgroundImage.src=can.toDataURL('image/jpeg', 1.0);
+	backgroundImages[nr]=new Image();
+	backgroundImages[nr].src=can.toDataURL('image/jpeg', 1.0);
 }
-function rePaintBackground(ft, bt){
-	currentStarFrame++;
+function rePaintBackground(ft, bt, scene){
 	document.body.style.backgroundColor=mainColors[0];
 	ctx.fillStyle=mainColors[0];
-	ctx.fillRect(0, 0, 400, 400);
-	ctx.drawImage(backgroundImage, 0, 0);
+	//ctx.fillRect(0, 0, 400, 400);
+	frameLeng++;
+	if (frameLeng%30==0)
+		currentStarFrame++;
+	var genStars;
+	ctx.drawImage(backgroundImages[scene], bt, ft), genStars=backgroundStars[scene];
+	var GNN=backgroundImages[scene].height, GMM=backgroundImages[scene].width;
 	for (var star of genStars)
 		{
 		for (var i=0; i<starsInfo[star.size].length; i++)
