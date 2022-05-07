@@ -1,0 +1,2 @@
+# Galactica
+Simple JavaScript game
