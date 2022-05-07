@@ -35,7 +35,7 @@ function makeFrame(a, b, c, d, theme){
 				}
 }
 function printText(x, y, text, scale, color, ALPH){
-	var last=[];
+	var XX=x, YY=y, last=[];
 	for (var c of text)
 		{
 		if (c==' ')
@@ -60,5 +60,5 @@ function printText(x, y, text, scale, color, ALPH){
 							}
 		y+=scale*T[0].length+scale;
 		}
-	return last;
+	return {a: XX, b: YY, c: last[0], d: last[1]};
 }
