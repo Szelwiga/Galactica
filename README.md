@@ -1,2 +1,3 @@
 # Galactica
-Simple JavaScript game
+Simple game welcome screen with randomly generated space themed pixelart background.
+
